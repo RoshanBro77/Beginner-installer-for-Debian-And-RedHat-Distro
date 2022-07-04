@@ -2,8 +2,8 @@
 echo "Type d if you are using debian distro and type r if you are using red hat distro"
 read reply
 cmd=""
-
-case $reply in
+#selecting pkg manager
+case $reply in 
     d)
     cmd="apt";;
     r)
@@ -14,8 +14,11 @@ case $reply in
 esac
 echo "$reply"
 
+#universal commands
 sudo $cmd update && sudo $cmd upgrade -y
 sudo $cmd install vlc gimp kdenlive kwrite neofetch htop radeontop synaptic gparted timeshift redshift
+
+#PkG
 echo "Do you want to install gnome tweak tools"
 read ans
     if ["$ans" = "y"]; then
@@ -25,6 +28,7 @@ read ans
     then
         echo "Canceled"
     fi
+
 
 case $reply in
     d)
@@ -46,9 +50,10 @@ case $reply in
     fi
    cat /proc/sys/vm/swappiness
 
-   echo "Change swappiness in last of the file  vm.swappiness=20"
+   echo "Change swappiness in last of the file  vm.swappiness=30"
    sudo nano /etc/sysctl.conf
    echo "Add noatime in ext4 before ,errors=......"
+   #reduce ssd writes
    sudo nano /etc/fstab
    echo "Battery Optimization"
    echo "Autocpufreq is recommended if you want to install tlp then enter y else n"
@@ -81,7 +86,7 @@ case $reply in
     then
         echo "Canceled"
     fi
-
+#Debian based commands
     sudo apt install bleachbit
     sudo apt install software-properties-common
     sudo add-apt-repository ppa:gerardpuig/ppa
@@ -98,6 +103,7 @@ case $reply in
 
     ;;
     r)
+    #Red hat Based
     cmd="dnf"
     sudo dnf upgrade --refresh
     echo "Add these lines in editor opened now"
