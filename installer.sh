@@ -16,15 +16,15 @@ echo "$reply"
 
 #universal commands
 sudo $cmd update && sudo $cmd upgrade -y
-sudo $cmd install vlc gimp kdenlive kwrite neofetch htop radeontop synaptic gparted timeshift redshift
+sudo $cmd install vlc gimp kdenlive neofetch htop radeontop gparted timeshift redshift
 
 #PkG
 echo "Do you want to install gnome tweak tools"
 read ans
-    if ["$ans" = "y"]; then
+    if [$ans = "y"]; then
         sudo $cmd install gnome-tweak-tool
         gnome-tweak-tool
-    elif ["$ans" = "n"];
+    elif [$ans = "n"];
     then
         echo "Canceled"
     fi
@@ -33,24 +33,24 @@ read ans
 case $reply in
     d)
     cmd="apt"
-    sudo apt install ubuntu-restricted-extras
-    sudo apt install dconf-editor
-    dconf-editor
+    sudo $cmd install ubuntu-restricted-extras
+    sudo $cmd install dconf-editor
     echo "Custoimize dconf editor to active minimize Dock"
+    dconf-editor
     echo "Do you want to install numix -circles icons  y or n"
     read ans
     if [$ans=="y"]
     then
         sudo add-apt-repository ppa:numix/ppa
-        sudo apt-get update
-        sudo apt-get install numix-gtk-theme numix-icon-theme-circle
+        sudo $cmd update
+        sudo $cmd install numix-gtk-theme numix-icon-theme-circle
     elif [$ans=="n"]
     then
         echo "Canceled"
     fi
    cat /proc/sys/vm/swappiness
 
-   echo "Change swappiness in last of the file  vm.swappiness=30"
+   echo "Change swappiness in end of the file  vm.swappiness=30"
    sudo nano /etc/sysctl.conf
    echo "Add noatime in ext4 before ,errors=......"
    #reduce ssd writes
@@ -91,15 +91,18 @@ case $reply in
     sudo apt install software-properties-common
     sudo add-apt-repository ppa:gerardpuig/ppa
     sudo apt update
+    echo"Installing ubuntu-cleaner"
     sudo apt install ubuntu-cleaner
     sudo apt autoremove && sudo apt autoclean
     echo "Copy auto-cpufreq.confexample file from auto-cpufreq folder in Development to /etc/ and rename as auto-cpufreq.conf after editing it"
     echo "Remainins steps are::"
     echo "  "
-    echo " "
+    echo "  "
     echo "Configure display sound and other user settings "
     echo "Install Java python Gnome extensions if needed go and search things to do after installing ubuntu in youtube."
-    echo "search gufw in synaptic and enable firewall"
+    sudo apt install gufw
+    echo "Enable firewall"
+
 
     ;;
     r)
@@ -107,10 +110,11 @@ case $reply in
     cmd="dnf"
     sudo dnf upgrade --refresh
     echo "Add these lines in editor opened now"
-    sudo nano /etc/dnf/dnf.conf
     echo "fastestmirror=True"
     echo "max_parallel_downloads=10"
     echo "defaultyes=True"
+    sudo nano /etc/dnf/dnf.conf
+   
     sudo dnf update
     sudo dnf install \
   https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -119,9 +123,9 @@ case $reply in
     sudo dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel
     sudo dnf install lame\* --exclude=lame-devel
     sudo dnf group upgrade --with-optional Multimedia
-    echo "Do you want to install preload? y or n"
+    echo "Do you want to install preload? y or n (recommended if ram is more than 8 GB)"
     read ans
-    if [$ans==y]
+    if [$ans=="y"]
     then
         sudo dnf copr enable elxreno/preload -y && sudo dnf install preload -y
     elif [$ans=="n"]
@@ -134,7 +138,21 @@ case $reply in
     sudo dnf install fontconfig-enhanced-defaults -y
     sudo dnf install bleachbit
     echo "Battery Optimization"
-   echo "Autocpufreq is recommended if you want to install tlp then enter y else n"
+   
+    echo "Do you want to install Autocpufreq? Don't install if you already installed tlp!!"
+    read ans
+    if [$ans=="y"]
+        then
+            mkdir Developments
+            cd Development
+            git clone git@github.com:AdnanHodzic/auto-cpufreq.git
+            cd auto-cpufreq && sudo ./auto-cpufreq-installer
+    elif [$ans=="n"]
+    then
+        echo "Canceled"
+    fi
+    echo "Copy auto-cpufreq.confexample file from auto-cpufreq folder in Development to /etc/ and rename as auto-cpufreq.conf after editing it"
+    echo "Autocpufreq is recommended if you want to install tlp then enter y else n"
    read ans
     if [$ans=="y"]
     then
@@ -152,19 +170,6 @@ case $reply in
     then
         echo "Canceled"
     fi
-    echo "Do you want to install Autocpufreq? Don't install if you already installed tlp!!"
-    read ans
-    if [$ans=="y"]
-        then
-            mkdir Developments
-            cd Development
-            git clone git@github.com:AdnanHodzic/auto-cpufreq.git
-            cd auto-cpufreq && sudo ./auto-cpufreq-installer
-    elif [$ans=="n"]
-    then
-        echo "Canceled"
-    fi
-    echo "Copy auto-cpufreq.confexample file from auto-cpufreq folder in Development to /etc/ and rename as auto-cpufreq.conf after editing it"
     echo "Remainins steps are::"
     echo "  "
     echo " "
