@@ -16,8 +16,15 @@ echo "$reply"
 
 #universal commands
 sudo $cmd update && sudo $cmd upgrade -y
-sudo $cmd install vlc gimp kdenlive neofetch htop radeontop gparted timeshift redshift-gtk
-
+echo "Want to install vlc gimp kdenlive and other application....?"
+read ans
+case $ans in
+    y)
+        sudo $cmd install vlc gimp kdenlive neofetch htop radeontop gparted timeshift redshift-gtk
+    ;;
+    *)
+    ;;
+esac
 #PkG
 echo "Do you want to install gnome tweak tools"
 read ans
@@ -158,9 +165,6 @@ case $reply in
         
         sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
         sudo dnf groupupdate core
-        sudo dnf install gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav --exclude=gstreamer1-plugins-bad-free-devel
-        sudo dnf install lame\* --exclude=lame-devel
-        sudo dnf group upgrade --with-optional Multimedia
         sudo dnf groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
         sudo dnf groupupdate sound-and-video
         echo "Do you want to install preload? y or n (recommended if ram is more than 8 GB)"
@@ -177,10 +181,10 @@ case $reply in
         esac
         
         sudo dnf install chrome-gnome-shell gnome-extensions-app
-        sudo dnf copr enable dawid/better_fonts -y
-        sudo dnf install fontconfig-font-replacements -y --skip-broken
-        sudo dnf install fontconfig-enhanced-defaults -y --skip-broken
-        sudo dnf install bleachbit
+        #sudo dnf copr enable dawid/better_fonts -y
+        #sudo dnf install fontconfig-font-replacements -y --skip-broken
+        #sudo dnf install fontconfig-enhanced-defaults -y --skip-broken
+        #sudo dnf install bleachbit
         echo "Battery Optimization"
         
         echo "Do you want to install Autocpufreq? (Don't install if you have already installed tlp!!)"
